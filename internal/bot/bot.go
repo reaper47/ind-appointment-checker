@@ -17,13 +17,6 @@ type config struct {
 	URL string
 }
 
-func (c config) message(text string) {
-	_, err := http.Get(c.URL + strings.ReplaceAll(text, " ", "+"))
-	if err != nil {
-		log.Println("could not send message: ", err)
-	}
-}
-
 // SendMessage sends a Telegram message to the bot chat.
 func SendMessage(text string) {
 	once.Do(func() {
@@ -35,4 +28,12 @@ func SendMessage(text string) {
 		}
 	})
 	bot.message(text)
+}
+
+func (c config) message(text string) {
+	_, err := http.Get(c.URL + strings.ReplaceAll(text, " ", "+"))
+	if err != nil {
+		log.Println("could not send message: ", err)
+	}
+	log.Printf("sent message: %s", strings.ReplaceAll(text, "\n", " "))
 }

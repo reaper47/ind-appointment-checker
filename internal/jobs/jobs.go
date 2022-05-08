@@ -9,6 +9,7 @@ import (
 	"github.com/go-co-op/gocron"
 	"github.com/reaper47/ind-appointment-checker/internal/appointments"
 	"github.com/reaper47/ind-appointment-checker/internal/bot"
+	"github.com/reaper47/ind-appointment-checker/internal/config"
 	"github.com/reaper47/ind-appointment-checker/internal/models"
 	"github.com/reaper47/ind-appointment-checker/internal/repository"
 )
@@ -16,17 +17,17 @@ import (
 // ScheduleCronJobs schedules cron jobs for the app. It starts the following jobs:
 //
 // - watchAppointments: warch for earlier appointments every 10m
-func ScheduleCronJobs(currBioAppointment, currResidenceAppointment time.Time) {
+func ScheduleCronJobs() {
 	s := gocron.NewScheduler(time.UTC)
 	s.Every(10).Minutes().Do(func() {
-		watchAppointments(currBioAppointment, currResidenceAppointment)
+		watchAppointments()
 	})
 	s.StartBlocking()
 }
 
-func watchAppointments(currBioAppointment, currResidenceAppointment time.Time) {
-	checkAvailabilities(appointments.Biometrics(), currBioAppointment, true)
-	checkAvailabilities(appointments.ResidenceSticker(), currResidenceAppointment, false)
+func watchAppointments() {
+	checkAvailabilities(appointments.Biometrics(), config.Config().CurrAppointmentBiometrics, true)
+	checkAvailabilities(appointments.ResidenceSticker(), config.Config().CurrAppointmentResidenceSticker, false)
 }
 
 func checkAvailabilities(availabilities []models.Availabilities, currAppointmentDate time.Time, isBiometrics bool) {
@@ -51,7 +52,7 @@ func checkDates(appointments []models.Availability, city models.City, currDate t
 			containsDate = repository.Repo().ContainsResidenceStickerDate(city, date)
 		}
 
-		if date.Before(currDate) && !containsDate {
+		if !containsDate && date.After(config.Config().StartDate) && date.Before(currDate) {
 			if isBiometrics {
 				repository.Repo().AddBiometricDate(city, date)
 			} else {
