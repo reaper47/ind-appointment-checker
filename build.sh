@@ -33,14 +33,14 @@ do
 		output_name+='.exe'
 	fi	
 
-	env GOOS=$GOOS GOARCH=$GOARCH go build -ldflags="-s -w" -o bin/builds/$output_name $package
+	env GOOS=$GOOS GOARCH=$GOARCH go build -ldflags="-s -w" -o release/builds/$output_name $package
 	if [ $? -ne 0 ]; then
    		echo 'An error has occurred. Aborting the script execution...'
 		exit 1
 	fi
 done
 
-for file in ./bin/builds/*
+for file in ./release/builds/*
 do 
 	mkdir -p ./release/$tag
 	fname="$(basename ${file})"
