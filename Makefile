@@ -2,6 +2,7 @@
 
 build:
 	go build -ldflags="-s -w" -o bin/ind main.go
+	cp -n .env ./bin/.env
 
 run:
 	go run main.go serve
