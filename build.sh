@@ -49,5 +49,5 @@ do
 		fname=${fname/%.exe}
 	fi
 
-	zip -9jpr ./release/$tag/$fname.zip $file ./LICENSE ./env
+	zip -9jpr ./release/$tag/$fname.zip $file ./LICENSE ./.env
 done 
