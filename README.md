@@ -1,8 +1,8 @@
 # IND Appointment Checker
 
 Do you spend too much time refreshing IND biometrics and/or residence sticker 
-appointments instead of watching cat videos on TikTok? Have you ever wished of 
-having someone that did this heavy work for you? 
+appointments instead of watching cat videos on TikTok? Have you ever wished 
+someone did this heavy work for you? 
 
 Well, my friend, look no further because this program is exactly what you need!
 Get notified when an earlier IND appointment pops up.
