@@ -19,7 +19,7 @@ Paste the Telegram bot API key and chat_id in the .env file.
 
 ## Installation
 
-1. Download the latest [release](https://github.com/reaper47/ind-appointment-checker/releases/tag/v1.0.0) and `cd` into it.
+1. Download the latest [release](https://github.com/reaper47/ind-appointment-checker/releases/tag/v1.0.0) and unzip it.
 1. Open the .env file to adjust the variables:
 
     - `TELEGRAM_CHATID`: the chat_id number from the Telegram section above
@@ -28,7 +28,7 @@ Paste the Telegram bot API key and chat_id in the .env file.
     - `IND_CURRENT_APPOINTMENT_BIOMETRICS`: your current biometrics appointment date in the form dd/mm/yyyy
     - `IND_CURRENT_APPOINTMENT_RESIDENCE_STICKER`: your current residence sticker appointment date in the form dd/mm/yyyy
 
-3. Start the program by double clicking on it or executing `./ind`
+3. Start the program by double clicking on it (Windows) or executing `./ind` (Linux/Mac).
 
 
 ## Build from source
