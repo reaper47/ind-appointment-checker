@@ -13,10 +13,10 @@ if [[ -z "$package" ]]; then
 fi
 package_split=(${package//\// })
 package_name=${package_split[-1]}
-	
+
 platforms=(
-    "windows/amd64" 
-    "windows/arm64" 
+    "windows/amd64"
+    "windows/arm64"
     "darwin/amd64"
     "darwin/arm64"
     "linux/amd64"
@@ -31,7 +31,7 @@ do
 	output_name=$package_name'-'$GOOS'-'$GOARCH
 	if [ $GOOS = "windows" ]; then
 		output_name+='.exe'
-	fi	
+	fi
 
 	env GOOS=$GOOS GOARCH=$GOARCH go build -ldflags="-s -w" -o release/builds/$output_name $package
 	if [ $? -ne 0 ]; then
@@ -41,13 +41,13 @@ do
 done
 
 for file in ./release/builds/*
-do 
+do
 	mkdir -p ./release/$tag
-	fname="$(basename ${file})"
+	fileName="$(basename ${file})"
 
-	if [[ $fname == *".exe"* ]]; then
-		fname=${fname/%.exe}
+	if [[ $fileName == *".exe"* ]]; then
+		fileName=${fileName/%.exe}
 	fi
 
 	zip -9jpr ./release/$tag/$fname.zip $file ./LICENSE ./.env
-done 
+done

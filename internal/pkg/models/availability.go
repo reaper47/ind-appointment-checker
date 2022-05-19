@@ -1,5 +1,7 @@
 package models
 
+import "golang.org/x/exp/slices"
+
 // Availabilities is a representation of the response
 // received from IND when after selecting a city.
 //
@@ -11,7 +13,12 @@ type Availabilities struct {
 	Data   []Availability `json:"data"`
 }
 
-// Availability is a representation of the response.data field of the
+// Equal verifies the Availabilities structs are identical.
+func (a Availabilities) Equal(other Availabilities) bool {
+	return a.City == other.City && a.Status == other.Status && slices.Equal(a.Data, other.Data)
+}
+
+// Availability is a representation of the response.data field of
 // the response received from IND when after selecting a city.
 type Availability struct {
 	Key       string `json:"key"`
@@ -19,4 +26,9 @@ type Availability struct {
 	StartTime string `json:"startTime"`
 	EndTime   string `json:"endTime"`
 	Parts     int    `json:"parts"`
+}
+
+// Equal verifies the Availability structs are identical.
+func (a Availability) Equal(other Availability) bool {
+	return a == other
 }

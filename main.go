@@ -1,12 +1,15 @@
 package main
 
 import (
+	"github.com/reaper47/ind-appointment-checker/internal/pkg/client"
+	"github.com/reaper47/ind-appointment-checker/internal/pkg/config"
+	"github.com/reaper47/ind-appointment-checker/internal/pkg/constants"
+	"github.com/reaper47/ind-appointment-checker/internal/pkg/jobs"
 	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/joho/godotenv"
-	"github.com/reaper47/ind-appointment-checker/internal/jobs"
 )
 
 func main() {
@@ -19,6 +22,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file:", err)
 	}
+	config.Init()
 
-	jobs.ScheduleCronJobs()
+	c := client.NewClient(constants.BaseURL)
+	jobs.ScheduleCronJobs(c)
 }

@@ -28,8 +28,7 @@ Paste the Telegram bot API key and chat_id in the .env file.
     - `IND_CURRENT_APPOINTMENT_BIOMETRICS`: your current biometrics appointment date in the form dd/mm/yyyy
     - `IND_CURRENT_APPOINTMENT_RESIDENCE_STICKER`: your current residence sticker appointment date in the form dd/mm/yyyy
 
-3. Start the program by double clicking on it (Windows) or executing `./ind-appointment-checker-[os]-[arch]` (Linux/Mac).
-
+3. Start the program by double-clicking on it or executing `./ind`
 
 ## Build from source
 
@@ -63,4 +62,4 @@ If you have any feedback, please reach out to me at macpoule@gmail.com
 
 ## Support
 
-For support, email macpoule@gmail.com, open an issue or start a discusssion on GitHub.
+For support, email macpoule@gmail.com, open an issue or start a discussion on GitHub.
