@@ -2,6 +2,7 @@ package appointments
 
 import (
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/client"
+	"github.com/reaper47/ind-appointment-checker/internal/pkg/config"
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/constants"
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/models"
 	"golang.org/x/exp/slices"
@@ -25,9 +26,15 @@ func ResidenceCard() []models.URL {
 }
 
 func makeURLs(productKey string, cities map[string]models.City) []models.URL {
-	var xr []models.URL
+	if len(config.Config.Cities) > 0 {
+		cities = config.Config.Cities
+	}
+
+	xr := make([]models.URL, len(cities))
+	i := 0
 	for _, city := range cities {
-		xr = append(xr, models.NewURL(city, productKey))
+		xr[i] = models.NewURL(city, productKey)
+		i++
 	}
 	return xr
 }
