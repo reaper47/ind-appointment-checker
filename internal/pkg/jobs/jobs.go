@@ -67,25 +67,9 @@ func checkDates(availabilities []models.Availability, city models.City, currDate
 		}
 		startTime, _ := time.Parse("15:04", availability.StartTime)
 
-		var containsDate bool
-		switch productKey {
-		case constants.ProductKeyBiometrics:
-			containsDate = repository.Repo().ContainsBiometricsDate(city, date)
-		case constants.ProductKeyResidenceSticker:
-			containsDate = repository.Repo().ContainsResidenceStickerDate(city, date)
-		case constants.ProductKeyResidenceCard:
-			containsDate = repository.Repo().ContainsResidenceCardDate(city, date)
-		}
-
+		containsDate := repository.Repo().ContainsDate(productKey, city, date)
 		if !containsDate && date.After(config.Config.StartDate) && date.Before(currDate) {
-			switch productKey {
-			case constants.ProductKeyBiometrics:
-				repository.Repo().AddBiometricDate(city, date)
-			case constants.ProductKeyResidenceSticker:
-				repository.Repo().AddResidenceStickerDate(city, date)
-			case constants.ProductKeyResidenceCard:
-				repository.Repo().AddResidenceCardDate(city, date)
-			}
+			repository.Repo().AddDate(productKey, city, date)
 
 			var name string
 			switch productKey {
@@ -97,7 +81,10 @@ func checkDates(availabilities []models.Availability, city models.City, currDate
 				name = "residence card"
 			}
 
-			text := fmt.Sprintf("%s:\nAn earlier %s appointment is available on %s at %s.\nBook an appointment now: https://oap.ind.nl/oap/en/#/%s", city, name, date.Format("02 Jan 2006"), startTime.Format("15:04"), productKey)
+			text := fmt.Sprintf(
+				"%s:\nAn earlier %s appointment is available on %s at %s.\nBook an appointment now: https://oap.ind.nl/oap/en/#/%s",
+				city, name, date.Format("02 Jan 2006"), startTime.Format("15:04"), productKey,
+			)
 			text = strings.ReplaceAll(text, "/#", "/%23")
 			bot.SendMessage(strings.ReplaceAll(text, "\n", "%0A"))
 			break

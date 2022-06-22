@@ -1,15 +1,23 @@
 package repository
 
 import (
-	"github.com/reaper47/ind-appointment-checker/internal/pkg/models"
 	"sync"
 	"time"
+
+	"github.com/reaper47/ind-appointment-checker/internal/pkg/constants"
+	"github.com/reaper47/ind-appointment-checker/internal/pkg/models"
 )
 
 var (
 	repo *repository
 	once sync.Once
 )
+
+type repository struct {
+	sentBiometricsDates       map[models.City][]time.Time
+	sentResidenceStickerDates map[models.City][]time.Time
+	sentResidenceCardDates    map[models.City][]time.Time
+}
 
 // Repo initialises and returns the application's in-memory repository.
 func Repo() *repository {
@@ -23,49 +31,33 @@ func Repo() *repository {
 	return repo
 }
 
-type repository struct {
-	sentBiometricsDates       map[models.City][]time.Time
-	sentResidenceStickerDates map[models.City][]time.Time
-	sentResidenceCardDates    map[models.City][]time.Time
-}
-
-// AddBiometricDate adds a biometrics appointment date for the given city.
+// AddDate adds an appointment date for the given city and product type.
 // The goal is to store dates already sent to the user via Telegram to avoid
 // sending the same appointment twice.
-func (r *repository) AddBiometricDate(city models.City, date time.Time) {
-	r.sentBiometricsDates[city] = append(r.sentBiometricsDates[city], date)
+func (r *repository) AddDate(productKey string, city models.City, date time.Time) {
+	switch productKey {
+	case constants.ProductKeyBiometrics:
+		r.sentBiometricsDates[city] = append(r.sentBiometricsDates[city], date)
+	case constants.ProductKeyResidenceSticker:
+		r.sentResidenceStickerDates[city] = append(r.sentResidenceStickerDates[city], date)
+	case constants.ProductKeyResidenceCard:
+		r.sentResidenceCardDates[city] = append(r.sentResidenceCardDates[city], date)
+	}
 }
 
-// AddResidenceStickerDate adds a residence sticker appointment date for the given city.
-// The goal is to store dates already sent to the user via Telegram to avoid
-// sending the same appointment twice.
-func (r *repository) AddResidenceStickerDate(city models.City, date time.Time) {
-	r.sentResidenceStickerDates[city] = append(r.sentResidenceStickerDates[city], date)
-}
-
-// AddResidenceCardDate adds a residence card collection appointment date for the given city.
-// The goal is to store dates already sent to the user via Telegram to avoid
-// sending the same appointment twice.
-func (r *repository) AddResidenceCardDate(city models.City, date time.Time) {
-	r.sentResidenceCardDates[city] = append(r.sentResidenceCardDates[city], date)
-}
-
-// ContainsBiometricsDate checks whether the biometrics appointment
-// lies in the repository.
-func (r *repository) ContainsBiometricsDate(city models.City, date time.Time) bool {
-	return findDate(r.sentBiometricsDates, city, date)
-}
-
-// ContainsResidenceStickerDate checks whether the residence sticker
-// appointment lies in the repository.
-func (r *repository) ContainsResidenceStickerDate(city models.City, date time.Time) bool {
-	return findDate(r.sentResidenceStickerDates, city, date)
-}
-
-// ContainsResidenceCardDate checks whether the residence sticker
-// appointment lies in the repository.
-func (r *repository) ContainsResidenceCardDate(city models.City, date time.Time) bool {
-	return findDate(r.sentResidenceCardDates, city, date)
+// ContainsBiometricsDate checks whether the appointment for the
+// product type lies in the repository.
+func (r *repository) ContainsDate(productKey string, city models.City, date time.Time) bool {
+	switch productKey {
+	case constants.ProductKeyBiometrics:
+		return findDate(r.sentBiometricsDates, city, date)
+	case constants.ProductKeyResidenceSticker:
+		return findDate(r.sentResidenceStickerDates, city, date)
+	case constants.ProductKeyResidenceCard:
+		return findDate(r.sentResidenceCardDates, city, date)
+	default:
+		return false
+	}
 }
 
 func findDate(m map[models.City][]time.Time, city models.City, date time.Time) bool {

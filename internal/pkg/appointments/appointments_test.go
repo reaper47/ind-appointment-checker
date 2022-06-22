@@ -2,30 +2,67 @@ package appointments_test
 
 import (
 	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"testing"
+
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/appointments"
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/client"
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/config"
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/models"
 	"golang.org/x/exp/slices"
-	"net/http"
-	"net/http/httptest"
-	"os"
-	"testing"
 )
 
 func TestBiometrics(t *testing.T) {
 	t.Run("all cities", func(t *testing.T) {
 		got := appointments.Biometrics()
 		want := []models.URL{
-			{models.Amsterdam, "/AM/slots/?productKey=BIO&persons=1", "BIO"},
-			{models.TheHague, "/DH/slots/?productKey=BIO&persons=1", "BIO"},
-			{models.Rotterdam, "/RO/slots/?productKey=BIO&persons=1", "BIO"},
-			{models.Zwolle, "/ZW/slots/?productKey=BIO&persons=1", "BIO"},
-			{models.DenBosch, "/DB/slots/?productKey=BIO&persons=1", "BIO"},
-			{models.Haarlem, "/6b425ff9f87de136a36b813cccf26e23/slots/?productKey=BIO&persons=1", "BIO"},
-			{models.Utrecht, "/fa24ccf0acbc76a7793765937eaee440/slots/?productKey=BIO&persons=1", "BIO"},
-			{models.ExpatEnschede, "/3535aca0fb9a2e8e8015f768fb3fa69d/slots/?productKey=BIO&persons=1", "BIO"},
-			{models.ExpatRotterdam, "/f0ef3c8f0973875936329d713a68c5f3/slots/?productKey=BIO&persons=1", "BIO"},
+			{
+				City:       models.Amsterdam,
+				Endpoint:   "/AM/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.TheHague,
+				Endpoint:   "/DH/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.Rotterdam,
+				Endpoint:   "/RO/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.Zwolle,
+				Endpoint:   "/ZW/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.DenBosch,
+				Endpoint:   "/DB/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.Haarlem,
+				Endpoint:   "/6b425ff9f87de136a36b813cccf26e23/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.Utrecht,
+				Endpoint:   "/fa24ccf0acbc76a7793765937eaee440/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.ExpatEnschede,
+				Endpoint:   "/3535aca0fb9a2e8e8015f768fb3fa69d/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.ExpatRotterdam,
+				Endpoint:   "/f0ef3c8f0973875936329d713a68c5f3/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
 		}
 		assertURLs(t, got, want)
 	})
@@ -39,9 +76,21 @@ func TestBiometrics(t *testing.T) {
 
 		got := appointments.Biometrics()
 		want := []models.URL{
-			{models.Amsterdam, "/AM/slots/?productKey=BIO&persons=1", "BIO"},
-			{models.TheHague, "/DH/slots/?productKey=BIO&persons=1", "BIO"},
-			{models.ExpatEnschede, "/3535aca0fb9a2e8e8015f768fb3fa69d/slots/?productKey=BIO&persons=1", "BIO"},
+			{
+				City:       models.Amsterdam,
+				Endpoint:   "/AM/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.TheHague,
+				Endpoint:   "/DH/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.ExpatEnschede,
+				Endpoint:   "/3535aca0fb9a2e8e8015f768fb3fa69d/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
 		}
 		assertURLs(t, got, want)
 	})
@@ -53,11 +102,31 @@ func TestResidenceSticker(t *testing.T) {
 
 		got := appointments.ResidenceSticker()
 		want := []models.URL{
-			{models.Amsterdam, "/AM/slots/?productKey=VAA&persons=1", "VAA"},
-			{models.TheHague, "/DH/slots/?productKey=VAA&persons=1", "VAA"},
-			{models.Rotterdam, "/RO/slots/?productKey=VAA&persons=1", "VAA"},
-			{models.Zwolle, "/ZW/slots/?productKey=VAA&persons=1", "VAA"},
-			{models.DenBosch, "/DB/slots/?productKey=VAA&persons=1", "VAA"},
+			{
+				City:       models.Amsterdam,
+				Endpoint:   "/AM/slots/?productKey=VAA&persons=1",
+				ProductKey: "VAA",
+			},
+			{
+				City:       models.TheHague,
+				Endpoint:   "/DH/slots/?productKey=VAA&persons=1",
+				ProductKey: "VAA",
+			},
+			{
+				City:       models.Rotterdam,
+				Endpoint:   "/RO/slots/?productKey=VAA&persons=1",
+				ProductKey: "VAA",
+			},
+			{
+				City:       models.Zwolle,
+				Endpoint:   "/ZW/slots/?productKey=VAA&persons=1",
+				ProductKey: "VAA",
+			},
+			{
+				City:       models.DenBosch,
+				Endpoint:   "/DB/slots/?productKey=VAA&persons=1",
+				ProductKey: "VAA",
+			},
 		}
 
 		assertURLs(t, got, want)
@@ -72,8 +141,16 @@ func TestResidenceSticker(t *testing.T) {
 
 		got := appointments.ResidenceSticker()
 		want := []models.URL{
-			{models.Amsterdam, "/AM/slots/?productKey=VAA&persons=1", "VAA"},
-			{models.Rotterdam, "/RO/slots/?productKey=VAA&persons=1", "VAA"},
+			{
+				City:       models.Amsterdam,
+				Endpoint:   "/AM/slots/?productKey=VAA&persons=1",
+				ProductKey: "VAA",
+			},
+			{
+				City:       models.Rotterdam,
+				Endpoint:   "/RO/slots/?productKey=VAA&persons=1",
+				ProductKey: "VAA",
+			},
 		}
 
 		assertURLs(t, got, want)
@@ -86,11 +163,31 @@ func TestResidence(t *testing.T) {
 
 		got := appointments.ResidenceCard()
 		want := []models.URL{
-			{models.Amsterdam, "/AM/slots/?productKey=DOC&persons=1", "DOC"},
-			{models.TheHague, "/DH/slots/?productKey=DOC&persons=1", "DOC"},
-			{models.Rotterdam, "/RO/slots/?productKey=DOC&persons=1", "DOC"},
-			{models.Zwolle, "/ZW/slots/?productKey=DOC&persons=1", "DOC"},
-			{models.DenBosch, "/DB/slots/?productKey=DOC&persons=1", "DOC"},
+			{
+				City:       models.Amsterdam,
+				Endpoint:   "/AM/slots/?productKey=DOC&persons=1",
+				ProductKey: "DOC",
+			},
+			{
+				City:       models.TheHague,
+				Endpoint:   "/DH/slots/?productKey=DOC&persons=1",
+				ProductKey: "DOC",
+			},
+			{
+				City:       models.Rotterdam,
+				Endpoint:   "/RO/slots/?productKey=DOC&persons=1",
+				ProductKey: "DOC",
+			},
+			{
+				City:       models.Zwolle,
+				Endpoint:   "/ZW/slots/?productKey=DOC&persons=1",
+				ProductKey: "DOC",
+			},
+			{
+				City:       models.DenBosch,
+				Endpoint:   "/DB/slots/?productKey=DOC&persons=1",
+				ProductKey: "DOC",
+			},
 		}
 
 		assertURLs(t, got, want)
@@ -105,8 +202,16 @@ func TestResidence(t *testing.T) {
 
 		got := appointments.ResidenceCard()
 		want := []models.URL{
-			{models.Amsterdam, "/AM/slots/?productKey=DOC&persons=1", "VAA"},
-			{models.Zwolle, "/ZW/slots/?productKey=DOC&persons=1", "DOC"},
+			{
+				City:       models.Amsterdam,
+				Endpoint:   "/AM/slots/?productKey=DOC&persons=1",
+				ProductKey: "VAA",
+			},
+			{
+				City:       models.Zwolle,
+				Endpoint:   "/ZW/slots/?productKey=DOC&persons=1",
+				ProductKey: "DOC",
+			},
 		}
 
 		assertURLs(t, got, want)
