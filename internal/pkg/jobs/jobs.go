@@ -2,6 +2,10 @@ package jobs
 
 import (
 	"fmt"
+	"log"
+	"strings"
+	"time"
+
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/appointments"
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/bot"
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/client"
@@ -9,9 +13,6 @@ import (
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/constants"
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/models"
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/repository"
-	"log"
-	"strings"
-	"time"
 
 	"github.com/go-co-op/gocron"
 )

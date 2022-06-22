@@ -1,39 +1,68 @@
 package bot
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
-	"sync"
+	"unicode"
 )
 
-var (
-	bot  config
-	once sync.Once
-)
+var bot config
 
 type config struct {
 	URL string
 }
 
-// SendMessage sends a Telegram message to the bot chat.
-func SendMessage(text string) {
-	once.Do(func() {
-		bot = config{
-			URL: "https://api.telegram.org/bot" +
-				os.Getenv("TELEGRAM_BOTID") +
-				"/sendMessage?chat_id=" +
-				os.Getenv("TELEGRAM_CHATID") + "&text=",
+// Init initializes and verifies the bot.
+func Init() error {
+	chatID := os.Getenv("TELEGRAM_CHATID")
+	if !strings.HasPrefix(chatID, "-") {
+		return fmt.Errorf("chatID must start with a hyphen (-)")
+	}
+
+	_, err := strconv.Atoi(chatID[1:])
+	if err != nil {
+		return fmt.Errorf("chatID must be an integer")
+	}
+
+	botID := os.Getenv("TELEGRAM_BOTID")
+	parts := strings.Split(botID, ":")
+	if len(parts) != 2 {
+		return fmt.Errorf("botID must be separated by a colon (:)")
+	}
+
+	_, err = strconv.Atoi(parts[0])
+	if err != nil {
+		return fmt.Errorf("left part of botID must be an integer")
+	}
+
+	for _, r := range []rune(parts[1]) {
+		if !unicode.IsDigit(r) && !unicode.IsLetter(r) {
+			return fmt.Errorf("botID: %q is not a digit nor a letter", r)
 		}
-	})
-	bot.message(text)
+	}
+
+	bot = config{
+		URL: "https://api.telegram.org/bot" + botID + "/sendMessage?chat_id=" + chatID + "&text=",
+	}
+	return nil
 }
 
-func (c config) message(text string) {
-	_, err := http.Get(c.URL + strings.ReplaceAll(text, " ", "+"))
+// SendMessage sends a Telegram message to the bot chat.
+func SendMessage(text string) error {
+	_, err := http.Get(bot.URL + strings.ReplaceAll(text, " ", "+"))
 	if err != nil {
-		log.Println("could not send message: ", err)
+		return fmt.Errorf("could not send message: %s", err)
 	}
+
 	log.Printf("sent message: %s", strings.ReplaceAll(text, "\n", " "))
+	return nil
+}
+
+// Clear resets the bot's configuration.
+func Clear() {
+	bot = config{}
 }

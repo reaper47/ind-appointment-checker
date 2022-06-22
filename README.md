@@ -12,7 +12,7 @@ Get notified when an earlier IND appointment pops up.
 You need a Telegram bot to receive notifications. Otherwise, you are out of 
 luck, and better off finding another solution. 
 
-Follow these [steps](https://tutorial.cytron.io/2021/09/01/how-to-create-a-telegram-bot-get-the-api-key-and-chat-id/) to set up a bot
+Follow these [steps](https://stackoverflow.com/questions/32423837/telegram-bot-how-to-get-a-group-chat-id) to set up a bot
 on Telegram.
 
 Paste the Telegram bot API key and chat_id in the .env file.
