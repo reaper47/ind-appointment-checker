@@ -19,38 +19,63 @@ func TestBiometrics(t *testing.T) {
 		got := appointments.Biometrics()
 		want := []models.URL{
 			{
-				City:       models.Amsterdam,
+				City:       models.INDAmsterdam,
 				Endpoint:   "/AM/slots/?productKey=BIO&persons=1",
 				ProductKey: "BIO",
 			},
 			{
-				City:       models.TheHague,
+				City:       models.INDDenHaag,
 				Endpoint:   "/DH/slots/?productKey=BIO&persons=1",
 				ProductKey: "BIO",
 			},
 			{
-				City:       models.Rotterdam,
-				Endpoint:   "/RO/slots/?productKey=BIO&persons=1",
-				ProductKey: "BIO",
-			},
-			{
-				City:       models.Zwolle,
+				City:       models.INDZwolle,
 				Endpoint:   "/ZW/slots/?productKey=BIO&persons=1",
 				ProductKey: "BIO",
 			},
 			{
-				City:       models.DenBosch,
+				City:       models.INDDenBosch,
 				Endpoint:   "/DB/slots/?productKey=BIO&persons=1",
 				ProductKey: "BIO",
 			},
 			{
-				City:       models.Haarlem,
+				City:       models.INDRotterdam,
+				Endpoint:   "/RO/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.INDHaarlem,
 				Endpoint:   "/6b425ff9f87de136a36b813cccf26e23/slots/?productKey=BIO&persons=1",
 				ProductKey: "BIO",
 			},
 			{
-				City:       models.Utrecht,
-				Endpoint:   "/fa24ccf0acbc76a7793765937eaee440/slots/?productKey=BIO&persons=1",
+				City:       models.ExpatGroningen,
+				Endpoint:   "/0c127eb6d9fe1ced413d2112305e75f6/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.ExpatMaastricht,
+				Endpoint:   "/6c5280823686521552efe85094e607cf/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.ExpatWageningen,
+				Endpoint:   "/b084907207cfeea941cd9698821fd894/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.ExpatEindhoven,
+				Endpoint:   "/0588ef4088c08f53294eb60bab55c81e/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.ExpatDenHaag,
+				Endpoint:   "/5e325f444aeb56bb0270a61b4a0403eb/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.ExpatRotterdam,
+				Endpoint:   "/f0ef3c8f0973875936329d713a68c5f3/slots/?productKey=BIO&persons=1",
 				ProductKey: "BIO",
 			},
 			{
@@ -59,8 +84,13 @@ func TestBiometrics(t *testing.T) {
 				ProductKey: "BIO",
 			},
 			{
-				City:       models.ExpatRotterdam,
-				Endpoint:   "/f0ef3c8f0973875936329d713a68c5f3/slots/?productKey=BIO&persons=1",
+				City:       models.ExpatUtrecht,
+				Endpoint:   "/fa24ccf0acbc76a7793765937eaee440/slots/?productKey=BIO&persons=1",
+				ProductKey: "BIO",
+			},
+			{
+				City:       models.ExpatAmsterdam,
+				Endpoint:   "/284b189314071dcd571df5bb262a31db/slots/?productKey=BIO&persons=1",
 				ProductKey: "BIO",
 			},
 		}
@@ -68,7 +98,7 @@ func TestBiometrics(t *testing.T) {
 	})
 
 	t.Run("select cities", func(t *testing.T) {
-		_ = os.Setenv("TARGET_CITIES", "Amsterdam, The Hague,Expat center Enschede")
+		_ = os.Setenv("TARGET_CITIES", "IND Amsterdam, IND Den Haag,Expatcenter Enschede")
 		defer func() {
 			_ = os.Unsetenv("TARGET_CITIES")
 		}()
@@ -77,12 +107,12 @@ func TestBiometrics(t *testing.T) {
 		got := appointments.Biometrics()
 		want := []models.URL{
 			{
-				City:       models.Amsterdam,
+				City:       models.INDAmsterdam,
 				Endpoint:   "/AM/slots/?productKey=BIO&persons=1",
 				ProductKey: "BIO",
 			},
 			{
-				City:       models.TheHague,
+				City:       models.INDDenHaag,
 				Endpoint:   "/DH/slots/?productKey=BIO&persons=1",
 				ProductKey: "BIO",
 			},
@@ -103,27 +133,22 @@ func TestResidenceSticker(t *testing.T) {
 		got := appointments.ResidenceSticker()
 		want := []models.URL{
 			{
-				City:       models.Amsterdam,
+				City:       models.INDAmsterdam,
 				Endpoint:   "/AM/slots/?productKey=VAA&persons=1",
 				ProductKey: "VAA",
 			},
 			{
-				City:       models.TheHague,
+				City:       models.INDDenHaag,
 				Endpoint:   "/DH/slots/?productKey=VAA&persons=1",
 				ProductKey: "VAA",
 			},
 			{
-				City:       models.Rotterdam,
-				Endpoint:   "/RO/slots/?productKey=VAA&persons=1",
-				ProductKey: "VAA",
-			},
-			{
-				City:       models.Zwolle,
+				City:       models.INDZwolle,
 				Endpoint:   "/ZW/slots/?productKey=VAA&persons=1",
 				ProductKey: "VAA",
 			},
 			{
-				City:       models.DenBosch,
+				City:       models.INDDenBosch,
 				Endpoint:   "/DB/slots/?productKey=VAA&persons=1",
 				ProductKey: "VAA",
 			},
@@ -133,7 +158,7 @@ func TestResidenceSticker(t *testing.T) {
 	})
 
 	t.Run("selected cities", func(t *testing.T) {
-		_ = os.Setenv("TARGET_CITIES", "Amsterdam, Rotterdam")
+		_ = os.Setenv("TARGET_CITIES", "IND Amsterdam, IND Zwolle")
 		defer func() {
 			_ = os.Unsetenv("TARGET_CITIES")
 		}()
@@ -142,13 +167,13 @@ func TestResidenceSticker(t *testing.T) {
 		got := appointments.ResidenceSticker()
 		want := []models.URL{
 			{
-				City:       models.Amsterdam,
+				City:       models.INDAmsterdam,
 				Endpoint:   "/AM/slots/?productKey=VAA&persons=1",
 				ProductKey: "VAA",
 			},
 			{
-				City:       models.Rotterdam,
-				Endpoint:   "/RO/slots/?productKey=VAA&persons=1",
+				City:       models.INDZwolle,
+				Endpoint:   "/ZW/slots/?productKey=VAA&persons=1",
 				ProductKey: "VAA",
 			},
 		}
@@ -164,27 +189,22 @@ func TestResidence(t *testing.T) {
 		got := appointments.ResidenceCard()
 		want := []models.URL{
 			{
-				City:       models.Amsterdam,
+				City:       models.INDAmsterdam,
 				Endpoint:   "/AM/slots/?productKey=DOC&persons=1",
 				ProductKey: "DOC",
 			},
 			{
-				City:       models.TheHague,
+				City:       models.INDDenHaag,
 				Endpoint:   "/DH/slots/?productKey=DOC&persons=1",
 				ProductKey: "DOC",
 			},
 			{
-				City:       models.Rotterdam,
-				Endpoint:   "/RO/slots/?productKey=DOC&persons=1",
-				ProductKey: "DOC",
-			},
-			{
-				City:       models.Zwolle,
+				City:       models.INDZwolle,
 				Endpoint:   "/ZW/slots/?productKey=DOC&persons=1",
 				ProductKey: "DOC",
 			},
 			{
-				City:       models.DenBosch,
+				City:       models.INDDenBosch,
 				Endpoint:   "/DB/slots/?productKey=DOC&persons=1",
 				ProductKey: "DOC",
 			},
@@ -194,7 +214,7 @@ func TestResidence(t *testing.T) {
 	})
 
 	t.Run("selected cities", func(t *testing.T) {
-		_ = os.Setenv("TARGET_CITIES", "Amsterdam, Zwolle")
+		_ = os.Setenv("TARGET_CITIES", "IND Amsterdam, IND Zwolle")
 		defer func() {
 			_ = os.Unsetenv("TARGET_CITIES")
 		}()
@@ -203,12 +223,12 @@ func TestResidence(t *testing.T) {
 		got := appointments.ResidenceCard()
 		want := []models.URL{
 			{
-				City:       models.Amsterdam,
+				City:       models.INDAmsterdam,
 				Endpoint:   "/AM/slots/?productKey=DOC&persons=1",
 				ProductKey: "VAA",
 			},
 			{
-				City:       models.Zwolle,
+				City:       models.INDZwolle,
 				Endpoint:   "/ZW/slots/?productKey=DOC&persons=1",
 				ProductKey: "DOC",
 			},
@@ -221,7 +241,7 @@ func TestResidence(t *testing.T) {
 func TestProcess(t *testing.T) {
 	const productKey = "VAA"
 	want := models.Availabilities{
-		City:   models.Amsterdam,
+		City:   models.INDAmsterdam,
 		Status: http.StatusText(http.StatusOK),
 		Data: []models.Availability{
 			{
@@ -240,7 +260,7 @@ func TestProcess(t *testing.T) {
 	defer svr.Close()
 	c := client.NewClient(svr.URL)
 
-	xu := []models.URL{models.NewURL(models.Amsterdam, productKey)}
+	xu := []models.URL{models.NewURL(models.INDAmsterdam, productKey)}
 	got := appointments.Process(c, xu)
 
 	if !got[0].Equal(want) {
