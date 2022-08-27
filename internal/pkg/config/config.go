@@ -1,8 +1,10 @@
 package config
 
 import (
+	"github.com/reaper47/ind-appointment-checker/internal/pkg/constants"
 	"github.com/reaper47/ind-appointment-checker/internal/pkg/models"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -16,6 +18,7 @@ type config struct {
 	CurrAppointmentResidenceSticker time.Time
 	CurrAppointmentResidenceCard    time.Time
 	Cities                          map[string]models.City
+	Persons                         int
 }
 
 // Init initializes the Config struct with the environment variables from the .env file.
@@ -53,11 +56,17 @@ func Init() {
 		}
 	}
 
+	persons, err := strconv.Atoi(os.Getenv("TOTAL_PERSONS"))
+	if err != nil || persons <= 0 || persons > constants.MaxPersons {
+		persons = 1
+	}
+
 	Config = config{
 		StartDate:                       startDate,
 		CurrAppointmentBiometrics:       biometrics,
 		CurrAppointmentResidenceSticker: sticker,
 		CurrAppointmentResidenceCard:    card,
 		Cities:                          citiesMap,
+		Persons:                         persons,
 	}
 }

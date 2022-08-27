@@ -12,20 +12,20 @@ import (
 
 // Biometrics prepares all URLs for the biometrics appointment.
 func Biometrics() []models.URL {
-	return makeURLs(constants.ProductKeyBiometrics, models.BiometricCities)
+	return makeURLs(constants.ProductKeyBiometrics, models.BiometricCities, config.Config.Persons)
 }
 
 // ResidenceSticker prepares all URLs for the residence sticker appointment.
 func ResidenceSticker() []models.URL {
-	return makeURLs(constants.ProductKeyResidenceSticker, models.ResidenceStickerCities)
+	return makeURLs(constants.ProductKeyResidenceSticker, models.ResidenceStickerCities, config.Config.Persons)
 }
 
 // ResidenceCard prepares all URLs for the residence card collection appointment.
 func ResidenceCard() []models.URL {
-	return makeURLs(constants.ProductKeyResidenceCard, models.ResidenceCardCities)
+	return makeURLs(constants.ProductKeyResidenceCard, models.ResidenceCardCities, config.Config.Persons)
 }
 
-func makeURLs(productKey string, cities map[string]models.City) []models.URL {
+func makeURLs(productKey string, cities map[string]models.City, persons int) []models.URL {
 	if len(config.Config.Cities) > 0 {
 		cities = config.Config.Cities
 	}
@@ -33,7 +33,7 @@ func makeURLs(productKey string, cities map[string]models.City) []models.URL {
 	xr := make([]models.URL, len(cities))
 	i := 0
 	for _, city := range cities {
-		xr[i] = models.NewURL(city, productKey)
+		xr[i] = models.NewURL(city, productKey, persons)
 		i++
 	}
 	return xr

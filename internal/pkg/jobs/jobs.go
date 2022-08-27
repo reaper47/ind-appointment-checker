@@ -54,11 +54,11 @@ func watchAppointments(c client.Client, urls allURLs) {
 
 func checkAvailabilities(availabilities []models.Availabilities, currAppointmentDate time.Time, productKey string) {
 	for _, avail := range availabilities {
-		checkDates(avail.Data, avail.City, currAppointmentDate, productKey)
+		checkDates(avail.Data, avail.City, avail.Persons, currAppointmentDate, productKey)
 	}
 }
 
-func checkDates(availabilities []models.Availability, city models.City, currDate time.Time, productKey string) {
+func checkDates(availabilities []models.Availability, city models.City, persons int, currDate time.Time, productKey string) {
 	for _, availability := range availabilities {
 		date, err := time.Parse("2006-01-02", availability.Date)
 		if err != nil {
@@ -82,8 +82,8 @@ func checkDates(availabilities []models.Availability, city models.City, currDate
 			}
 
 			text := fmt.Sprintf(
-				"%s:\nAn earlier %s appointment is available on %s at %s.\nBook an appointment now: https://oap.ind.nl/oap/en/#/%s",
-				city, name, date.Format("02 Jan 2006"), startTime.Format("15:04"), productKey,
+				"%s:\nAn earlier %s appointment for %d person(s) is available on %s at %s.\nBook an appointment now: https://oap.ind.nl/oap/en/#/%s",
+				city, name, persons, date.Format("02 Jan 2006"), startTime.Format("15:04"), productKey,
 			)
 			text = strings.ReplaceAll(text, "/#", "/%23")
 			bot.SendMessage(strings.ReplaceAll(text, "\n", "%0A"))
