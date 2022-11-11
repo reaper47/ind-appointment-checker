@@ -7,7 +7,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"unicode"
 )
 
 var bot config
@@ -39,11 +38,6 @@ func Init() error {
 		return fmt.Errorf("left part of botID must be an integer")
 	}
 
-	for _, r := range []rune(parts[1]) {
-		if !unicode.IsDigit(r) && !unicode.IsLetter(r) {
-			return fmt.Errorf("botID: %q is not a digit nor a letter", r)
-		}
-	}
 
 	bot = config{
 		URL: "https://api.telegram.org/bot" + botID + "/sendMessage?chat_id=" + chatID + "&text=",
