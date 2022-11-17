@@ -39,6 +39,10 @@ func main() {
 		fmt.Print("Did your bot receive a test message? [Y/n]: ")
 		fmt.Scanln(&isReceived)
 
+		if isReceived == "" {
+			break
+		}
+
 		firstLetter := []rune(strings.ToLower(isReceived))[0]
 		if firstLetter == 'y' {
 			break
