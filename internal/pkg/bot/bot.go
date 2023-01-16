@@ -18,9 +18,6 @@ type config struct {
 // Init initializes and verifies the bot.
 func Init() error {
 	chatID := os.Getenv("TELEGRAM_CHATID")
-	if !strings.HasPrefix(chatID, "-") {
-		return fmt.Errorf("chatID must start with a hyphen (-)")
-	}
 
 	_, err := strconv.Atoi(chatID[1:])
 	if err != nil {
@@ -37,7 +34,6 @@ func Init() error {
 	if err != nil {
 		return fmt.Errorf("left part of botID must be an integer")
 	}
-
 
 	bot = config{
 		URL: "https://api.telegram.org/bot" + botID + "/sendMessage?chat_id=" + chatID + "&text=",
