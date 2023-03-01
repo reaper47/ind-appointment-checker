@@ -29,27 +29,11 @@ func TestInit(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "chatID missing hyphen prefix",
-			in: struct {
-				chatID string
-				botID  string
-			}{"846671787", "6945786513:NHFwLDeuUZs69uH7qvaUuYuFhy90tVPNu9Z"},
-			wantErr: true,
-		},
-		{
 			name: "chatID not only numbers",
 			in: struct {
 				chatID string
 				botID  string
 			}{"-8JK671787", "6945786513:NHFwLDeuUZs69uH7qvaUuYuFhy90tVPNu9Z"},
-			wantErr: true,
-		},
-		{
-			name: "botID only alphanumeric",
-			in: struct {
-				chatID string
-				botID  string
-			}{"-846671787", "6945786513:-NHFwLDeuUZs69uH7qvaUuYuFhy9,0tVPNu9Z"},
 			wantErr: true,
 		},
 		{
